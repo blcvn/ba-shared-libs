@@ -23,12 +23,17 @@ func NewCertReloader(certPath, keyPath string) (*CertReloader, error) {
 		certPath: certPath,
 		keyPath:  keyPath,
 	}
-	// Initial load
-	if err := reloader.reload(); err != nil {
-		return nil, fmt.Errorf("initial load failed: %v", err)
+	// Initial load with retry to handle Vault Agent race condition
+	var err error
+	for i := 0; i < 10; i++ {
+		if err = reloader.reload(); err == nil {
+			go reloader.watch()
+			return reloader, nil
+		}
+		fmt.Printf("MtLS: Waiting for certificates %s... (%d/10)\n", certPath, i+1)
+		time.Sleep(2 * time.Second)
 	}
-	go reloader.watch()
-	return reloader, nil
+	return nil, fmt.Errorf("initial load failed after retries: %v", err)
 }
 
 func (r *CertReloader) reload() error {
