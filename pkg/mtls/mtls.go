@@ -78,7 +78,7 @@ func (r *CertReloader) GetConfigForClient(hello *tls.ClientHelloInfo) (*tls.Conf
 
 	return &tls.Config{
 		Certificates: []tls.Certificate{*r.cert},
-		ClientAuth:   tls.RequireAndVerifyClientCert,
+		ClientAuth:   tls.VerifyClientCertIfGiven,
 		ClientCAs:    r.pool,
 		MinVersion:   tls.VersionTLS12,
 	}, nil
