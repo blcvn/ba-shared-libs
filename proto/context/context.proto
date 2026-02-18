@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package context;
+
+option go_package = "github.com/blcvn/backend/services/proto/context;context";
+
+service ContextService {
+  rpc SetUserContext(SetContextRequest) returns (SetContextResponse);
+  rpc GetUserContext(GetContextRequest) returns (GetContextResponse);
+}
+
+message SetContextRequest {
+  string user_id = 1;
+  string key = 2;
+  string value = 3;
+}
+
+message SetContextResponse {
+  bool success = 1;
+}
+
+message GetContextRequest {
+  string user_id = 1;
+  string key = 2;
+}
+
+message GetContextResponse {
+  string value = 1;
+  bool found = 2;
+}

@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package orchestrator;
+
+option go_package = "github.com/blcvn/backend/services/proto/orchestrator;orchestrator";
+
+service OrchestratorService {
+  rpc ExecuteTask(ExecuteTaskRequest) returns (ExecuteTaskResponse);
+  rpc GetTaskStatus(GetTaskStatusRequest) returns (GetTaskStatusResponse);
+  rpc CancelTask(CancelTaskRequest) returns (CancelTaskResponse);
+  rpc SubmitInput(SubmitInputRequest) returns (SubmitInputResponse);
+}
+
+message ExecuteTaskRequest {
+  string session_id = 1;
+  string user_id = 2;
+  string content = 3;
+  map<string, string> metadata = 4;
+}
+
+message ExecuteTaskResponse {
+  string task_id = 1;
+  string status = 2;
+}
+
+message SubmitInputRequest {
+  string task_id = 1;
+  string input_data = 2;
+}
+
+message SubmitInputResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetTaskStatusRequest {
+  string task_id = 1;
+}
+
+message GetTaskStatusResponse {
+  string task_id = 1;
+  string status = 2;
+  string result = 3;
+  int64 created_at = 4;
+  int64 updated_at = 5;
+}
+
+message CancelTaskRequest {
+  string task_id = 1;
+}
+
+message CancelTaskResponse {
+  bool success = 1;
+  string message = 2;
+}

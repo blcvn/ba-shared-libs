@@ -2,7 +2,6 @@ package health
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"time"
 
@@ -21,10 +20,10 @@ const (
 
 // HealthCheck represents a health check result
 type HealthCheck struct {
-	Status      HealthStatus       `json:"status"`
-	Timestamp   time.Time          `json:"timestamp"`
-	Version     string             `json:"version"`
-	Checks      map[string]Check   `json:"checks"`
+	Status    HealthStatus     `json:"status"`
+	Timestamp time.Time        `json:"timestamp"`
+	Version   string           `json:"version"`
+	Checks    map[string]Check `json:"checks"`
 }
 
 // Check represents an individual component check
@@ -52,15 +51,15 @@ func NewHealthChecker(db *gorm.DB, redis *redis.Client, version string) *HealthC
 // CheckHealth performs all health checks
 func (h *HealthChecker) CheckHealth(ctx context.Context) *HealthCheck {
 	checks := make(map[string]Check)
-	
+
 	// Check database
 	checks["database"] = h.checkDatabase(ctx)
-	
+
 	// Check Redis (if available)
 	if h.redis != nil {
 		checks["redis"] = h.checkRedis(ctx)
 	}
-	
+
 	// Determine overall status
 	overallStatus := StatusHealthy
 	for _, check := range checks {
@@ -71,7 +70,7 @@ func (h *HealthChecker) CheckHealth(ctx context.Context) *HealthCheck {
 			overallStatus = StatusDegraded
 		}
 	}
-	
+
 	return &HealthCheck{
 		Status:    overallStatus,
 		Timestamp: time.Now(),
@@ -82,7 +81,7 @@ func (h *HealthChecker) CheckHealth(ctx context.Context) *HealthCheck {
 
 func (h *HealthChecker) checkDatabase(ctx context.Context) Check {
 	start := time.Now()
-	
+
 	sqlDB, err := h.db.DB()
 	if err != nil {
 		return Check{
@@ -90,16 +89,16 @@ func (h *HealthChecker) checkDatabase(ctx context.Context) Check {
 			Message: fmt.Sprintf("failed to get DB: %v", err),
 		}
 	}
-	
+
 	if err := sqlDB.PingContext(ctx); err != nil {
 		return Check{
 			Status:  StatusUnhealthy,
 			Message: fmt.Sprintf("ping failed: %v", err),
 		}
 	}
-	
+
 	latency := time.Since(start)
-	
+
 	// Check connection pool
 	stats := sqlDB.Stats()
 	if stats.OpenConnections >= stats.MaxOpenConnections {
@@ -109,7 +108,7 @@ func (h *HealthChecker) checkDatabase(ctx context.Context) Check {
 			Latency: latency.String(),
 		}
 	}
-	
+
 	return Check{
 		Status:  StatusHealthy,
 		Latency: latency.String(),
@@ -118,16 +117,16 @@ func (h *HealthChecker) checkDatabase(ctx context.Context) Check {
 
 func (h *HealthChecker) checkRedis(ctx context.Context) Check {
 	start := time.Now()
-	
+
 	if err := h.redis.Ping(ctx).Err(); err != nil {
 		return Check{
 			Status:  StatusUnhealthy,
 			Message: fmt.Sprintf("ping failed: %v", err),
 		}
 	}
-	
+
 	latency := time.Since(start)
-	
+
 	return Check{
 		Status:  StatusHealthy,
 		Latency: latency.String(),
@@ -137,7 +136,7 @@ func (h *HealthChecker) checkRedis(ctx context.Context) Check {
 // CheckReadiness performs readiness checks (stricter than health)
 func (h *HealthChecker) CheckReadiness(ctx context.Context) *HealthCheck {
 	health := h.CheckHealth(ctx)
-	
+
 	// Additional readiness checks
 	// For example, check if migrations are complete
 	if err := h.checkMigrations(ctx); err != nil {
@@ -147,7 +146,7 @@ func (h *HealthChecker) CheckReadiness(ctx context.Context) *HealthCheck {
 		}
 		health.Status = StatusUnhealthy
 	}
-	
+
 	return health
 }
 
@@ -158,10 +157,10 @@ func (h *HealthChecker) checkMigrations(ctx context.Context) error {
 		Scan(&count).Error; err != nil {
 		return fmt.Errorf("migration check failed: %w", err)
 	}
-	
+
 	if count == 0 {
 		return fmt.Errorf("no tables found, migrations may not be complete")
 	}
-	
+
 	return nil
 }

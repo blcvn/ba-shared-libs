@@ -1,0 +1,137 @@
+syntax = "proto3";
+
+package persistence;
+
+option go_package = "github.com/blcvn/backend/services/proto/persistence;persistence";
+
+import "google/protobuf/timestamp.proto";
+
+service PersistenceService {
+  // Task Operations
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
+  rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse);
+  rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
+  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse);
+
+  // Document Operations
+  rpc CreateDocument(CreateDocumentRequest) returns (CreateDocumentResponse);
+  rpc GetDocument(GetDocumentRequest) returns (GetDocumentResponse);
+
+  // Graph Operations
+  rpc ExecuteGraphQuery(GraphQueryRequest) returns (GraphQueryResponse);
+
+  // Approval Operations
+  rpc CreateApproval(CreateApprovalRequest) returns (CreateApprovalResponse);
+
+  // Review Operations
+  rpc CreateReview(CreateReviewRequest) returns (CreateReviewResponse);
+}
+
+// Document Messages
+message CreateDocumentRequest {
+  string id = 1;
+  string title = 2;
+  string content = 3; // or bytes
+  string author = 4;
+  string project_id = 5;
+  string parent_id = 6;
+  string root_id = 7;
+  string module_name = 8;
+  string tier = 9;
+  string status = 10;
+  int32 version = 11;
+}
+
+message CreateDocumentResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message GetDocumentRequest {
+  string id = 1;
+}
+
+message GetDocumentResponse {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+}
+
+// Graph Messages
+message GraphQueryRequest {
+  string query = 1;
+  map<string, string> params = 2; // simplified
+}
+
+message GraphQueryResponse {
+  string result_json = 1;
+}
+
+// Approval Messages
+message CreateApprovalRequest {
+  string document_id = 1;
+  string approver = 2;
+  string status = 3;
+}
+
+message CreateApprovalResponse {
+  bool success = 1;
+}
+
+// Review Messages
+message CreateReviewRequest {
+  string document_id = 1;
+  string reviewer = 2;
+  string comments = 3;
+}
+
+message CreateReviewResponse {
+  bool success = 1;
+}
+
+// Task Messages (Original)
+message CreateTaskRequest {
+  string task_id = 1;
+  string status = 2;
+  string workflow_mode = 3;
+  bytes result_data_json = 4;
+}
+
+message CreateTaskResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message UpdateTaskRequest {
+  string task_id = 1;
+  string status = 2;
+  bytes result_data_json = 3;
+}
+
+message UpdateTaskResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message GetTaskRequest {
+  string task_id = 1;
+}
+
+message GetTaskResponse {
+  string task_id = 1;
+  string status = 2;
+  string workflow_mode = 3;
+  bytes result_data_json = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp updated_at = 6;
+}
+
+message ListTasksRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message ListTasksResponse {
+  repeated GetTaskResponse tasks = 1;
+  string next_page_token = 2;
+}

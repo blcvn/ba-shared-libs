@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package state;
+
+option go_package = "github.com/blcvn/backend/services/proto/state;state";
+
+service StateService {
+  rpc SetSessionState(SetStateRequest) returns (SetStateResponse);
+  rpc GetSessionState(GetStateRequest) returns (GetStateResponse);
+  rpc ClearSessionState(ClearStateRequest) returns (ClearStateResponse);
+}
+
+message SetStateRequest {
+  string session_id = 1;
+  string key = 2;
+  string value = 3;
+}
+
+message SetStateResponse {
+  bool success = 1;
+}
+
+message GetStateRequest {
+  string session_id = 1;
+  string key = 2;
+}
+
+message GetStateResponse {
+  string value = 1;
+  bool found = 2;
+}
+
+message ClearStateRequest {
+  string session_id = 1;
+}
+
+message ClearStateResponse {
+  bool success = 1;
+}

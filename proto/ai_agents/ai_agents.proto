@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package ai_agents;
+
+option go_package = "github.com/blcvn/backend/services/proto/ai_agents;ai_agentspb";
+
+service AIAgentsService {
+  rpc GetAgent(GetAgentRequest) returns (GetAgentResponse);
+  rpc ListAgents(ListAgentsRequest) returns (ListAgentsResponse);
+  rpc GetSkill(GetSkillRequest) returns (GetSkillResponse);
+  rpc ListSkills(ListSkillsRequest) returns (ListSkillsResponse);
+}
+
+message Agent {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string persona = 4;
+  repeated string skills = 5;
+  bool is_active = 6;
+}
+
+message Skill {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string parameters = 4; // JSON string
+}
+
+message GetAgentRequest {
+  string id = 1;
+}
+
+message GetAgentResponse {
+  Agent agent = 1;
+}
+
+message ListAgentsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message ListAgentsResponse {
+  repeated Agent agents = 1;
+  string next_page_token = 2;
+}
+
+message GetSkillRequest {
+  string id = 1;
+}
+
+message GetSkillResponse {
+  Skill skill = 1;
+}
+
+message ListSkillsRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message ListSkillsResponse {
+  repeated Skill skills = 1;
+  string next_page_token = 2;
+}

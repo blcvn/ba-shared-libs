@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package planner;
+
+option go_package = "github.com/blcvn/backend/services/proto/planner;planner";
+
+service PlannerService {
+  rpc GeneratePlan(GeneratePlanRequest) returns (GeneratePlanResponse);
+  rpc UpdatePlan(UpdatePlanRequest) returns (UpdatePlanResponse);
+  rpc ExecutePlan(ExecuteRequest) returns (stream ExecuteResponse);
+}
+
+message ReActStep {
+  int32 step_number = 1;
+  string thought = 2;
+  string action = 3;
+  string action_input = 4;
+  string observation = 5;
+}
+
+message GeneratePlanRequest {
+  string session_id = 1;
+  string task_description = 2;
+  repeated string available_tools = 3;
+}
+
+message ExecuteRequest {
+  string plan_id = 1;
+  string session_id = 2;
+  map<string, string> context = 3;
+  repeated ReActStep history = 4;
+}
+
+message ExecuteResponse {
+  string step_id = 1;
+  string status = 2; // "PENDING", "RUNNING", "COMPLETED", "FAILED"
+  string output = 3;
+  string error = 4;
+}
+
+message PlanStep {
+  string id = 1;
+  string description = 2;
+  string tool_name = 3;
+  string tool_input = 4; // JSON string
+  bool store_output = 5;
+}
+
+message GeneratePlanResponse {
+  string plan_id = 1;
+  repeated PlanStep steps = 2;
+  string reasoning = 3;
+}
+
+message UpdatePlanRequest {
+  string plan_id = 1;
+  string step_id = 2;
+  string execution_result = 3;
+  bool success = 4;
+}
+
+message UpdatePlanResponse {
+  bool success = 1;
+  string next_action = 2; // "CONTINUE", "REPLAN", "STOP"
+  repeated PlanStep new_steps = 3;
+}

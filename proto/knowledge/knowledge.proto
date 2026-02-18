@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package knowledge;
+
+option go_package = "github.com/blcvn/backend/services/proto/knowledge;knowledge";
+
+service KnowledgeService {
+  rpc CreatePRD(CreatePRDRequest) returns (CreatePRDResponse);
+  rpc GenerateUserStories(GenerateUserStoriesRequest) returns (GenerateUserStoriesResponse);
+  // rpc QueryKnowledgeGraph(QueryRequest) returns (QueryResponse);
+}
+
+message CreatePRDRequest {
+  string project_id = 1;
+  string title = 2;
+  string description = 3;
+}
+
+message CreatePRDResponse {
+  string document_id = 1;
+  string content = 2;
+}
+
+message GenerateUserStoriesRequest {
+  string prd_content = 1;
+}
+
+message GenerateUserStoriesResponse {
+  string stories_json = 1;
+}
