@@ -4,11 +4,27 @@ package knowledge;
 
 option go_package = "github.com/blcvn/backend/services/proto/knowledge;knowledge";
 
+import "google/protobuf/timestamp.proto";
+
 service KnowledgeService {
+  // Document Lifecycle
   rpc CreatePRD(CreatePRDRequest) returns (CreatePRDResponse);
+  rpc GenerateDocument(GenerateDocumentRequest) returns (GenerateDocumentResponse);
+  rpc GetDocument(GetDocumentRequest) returns (GetDocumentResponse);
+  rpc GetDocumentByContext(GetDocumentByContextRequest) returns (GetDocumentResponse);
+  rpc UpdateDocument(UpdateDocumentRequest) returns (UpdateDocumentResponse);
+  rpc RegenerateDocument(RegenerateDocumentRequest) returns (RegenerateDocumentResponse);
+
+  // Workflow
+  rpc ApproveDocument(ApproveDocumentRequest) returns (ApproveDocumentResponse);
+  rpc ReviewDocument(ReviewDocumentRequest) returns (ReviewDocumentResponse);
+  rpc GetReviewStatus(GetReviewStatusRequest) returns (GetReviewStatusResponse);
+
+  // Utilities
   rpc GenerateUserStories(GenerateUserStoriesRequest) returns (GenerateUserStoriesResponse);
-  // rpc QueryKnowledgeGraph(QueryRequest) returns (QueryResponse);
 }
+
+// Messages
 
 message CreatePRDRequest {
   string project_id = 1;
@@ -19,6 +35,94 @@ message CreatePRDRequest {
 message CreatePRDResponse {
   string document_id = 1;
   string content = 2;
+}
+
+message GenerateDocumentRequest {
+  string project_id = 1;
+  string parent_document_id = 2;
+  string tier = 3; // "URD_INDEX", "URD_OUTLINE", "URD_FULL"
+  string module_name = 4;
+}
+
+message GenerateDocumentResponse {
+  string document_id = 1;
+  string job_id = 2; // For async tracking if needed
+}
+
+message GetDocumentRequest {
+  string document_id = 1;
+}
+
+message GetDocumentResponse {
+  string document_id = 1;
+  string project_id = 2;
+  string tier = 3;
+  string status = 4;
+  string content = 5;
+  string module_name = 6;
+  google.protobuf.Timestamp created_at = 7;
+  google.protobuf.Timestamp updated_at = 8;
+  string parent_document_id = 9;
+}
+
+message GetDocumentByContextRequest {
+  string parent_document_id = 1;
+  string tier = 2;
+}
+
+message UpdateDocumentRequest {
+  string document_id = 1;
+  string content = 2;
+}
+
+message UpdateDocumentResponse {
+  bool success = 1;
+}
+
+message RegenerateDocumentRequest {
+  string document_id = 1;
+  string instruction = 2;
+}
+
+message RegenerateDocumentResponse {
+  string job_id = 1;
+}
+
+message ApproveDocumentRequest {
+  string document_id = 1;
+}
+
+message ApproveDocumentResponse {
+  bool success = 1;
+}
+
+message ReviewDocumentRequest {
+  string document_id = 1;
+  string comment = 2;
+}
+
+message ReviewDocumentResponse {
+  string review_id = 1;
+  string status = 2;
+}
+
+message GetReviewStatusRequest {
+  string review_id = 1;
+}
+
+message Modification {
+  int32 start_index = 1;
+  int32 end_index = 2;
+  string content = 3;
+  string modify_type = 4; // ADD, REMOVE, REPLACE
+}
+
+message GetReviewStatusResponse {
+  string review_id = 1;
+  string status = 2; // pending, completed
+  string document_content = 3; // The content applied with changes (if completed) or original
+  repeated Modification modifications = 4;
+  string highlighted_content = 5; // HTML with highlights
 }
 
 message GenerateUserStoriesRequest {

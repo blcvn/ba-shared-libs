@@ -19,15 +19,34 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	KnowledgeService_CreatePRD_FullMethodName           = "/knowledge.KnowledgeService/CreatePRD"
-	KnowledgeService_GenerateUserStories_FullMethodName = "/knowledge.KnowledgeService/GenerateUserStories"
+	KnowledgeService_CreatePRD_FullMethodName            = "/knowledge.KnowledgeService/CreatePRD"
+	KnowledgeService_GenerateDocument_FullMethodName     = "/knowledge.KnowledgeService/GenerateDocument"
+	KnowledgeService_GetDocument_FullMethodName          = "/knowledge.KnowledgeService/GetDocument"
+	KnowledgeService_GetDocumentByContext_FullMethodName = "/knowledge.KnowledgeService/GetDocumentByContext"
+	KnowledgeService_UpdateDocument_FullMethodName       = "/knowledge.KnowledgeService/UpdateDocument"
+	KnowledgeService_RegenerateDocument_FullMethodName   = "/knowledge.KnowledgeService/RegenerateDocument"
+	KnowledgeService_ApproveDocument_FullMethodName      = "/knowledge.KnowledgeService/ApproveDocument"
+	KnowledgeService_ReviewDocument_FullMethodName       = "/knowledge.KnowledgeService/ReviewDocument"
+	KnowledgeService_GetReviewStatus_FullMethodName      = "/knowledge.KnowledgeService/GetReviewStatus"
+	KnowledgeService_GenerateUserStories_FullMethodName  = "/knowledge.KnowledgeService/GenerateUserStories"
 )
 
 // KnowledgeServiceClient is the client API for KnowledgeService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type KnowledgeServiceClient interface {
+	// Document Lifecycle
 	CreatePRD(ctx context.Context, in *CreatePRDRequest, opts ...grpc.CallOption) (*CreatePRDResponse, error)
+	GenerateDocument(ctx context.Context, in *GenerateDocumentRequest, opts ...grpc.CallOption) (*GenerateDocumentResponse, error)
+	GetDocument(ctx context.Context, in *GetDocumentRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error)
+	GetDocumentByContext(ctx context.Context, in *GetDocumentByContextRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error)
+	UpdateDocument(ctx context.Context, in *UpdateDocumentRequest, opts ...grpc.CallOption) (*UpdateDocumentResponse, error)
+	RegenerateDocument(ctx context.Context, in *RegenerateDocumentRequest, opts ...grpc.CallOption) (*RegenerateDocumentResponse, error)
+	// Workflow
+	ApproveDocument(ctx context.Context, in *ApproveDocumentRequest, opts ...grpc.CallOption) (*ApproveDocumentResponse, error)
+	ReviewDocument(ctx context.Context, in *ReviewDocumentRequest, opts ...grpc.CallOption) (*ReviewDocumentResponse, error)
+	GetReviewStatus(ctx context.Context, in *GetReviewStatusRequest, opts ...grpc.CallOption) (*GetReviewStatusResponse, error)
+	// Utilities
 	GenerateUserStories(ctx context.Context, in *GenerateUserStoriesRequest, opts ...grpc.CallOption) (*GenerateUserStoriesResponse, error)
 }
 
@@ -48,6 +67,78 @@ func (c *knowledgeServiceClient) CreatePRD(ctx context.Context, in *CreatePRDReq
 	return out, nil
 }
 
+func (c *knowledgeServiceClient) GenerateDocument(ctx context.Context, in *GenerateDocumentRequest, opts ...grpc.CallOption) (*GenerateDocumentResponse, error) {
+	out := new(GenerateDocumentResponse)
+	err := c.cc.Invoke(ctx, KnowledgeService_GenerateDocument_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *knowledgeServiceClient) GetDocument(ctx context.Context, in *GetDocumentRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error) {
+	out := new(GetDocumentResponse)
+	err := c.cc.Invoke(ctx, KnowledgeService_GetDocument_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *knowledgeServiceClient) GetDocumentByContext(ctx context.Context, in *GetDocumentByContextRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error) {
+	out := new(GetDocumentResponse)
+	err := c.cc.Invoke(ctx, KnowledgeService_GetDocumentByContext_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *knowledgeServiceClient) UpdateDocument(ctx context.Context, in *UpdateDocumentRequest, opts ...grpc.CallOption) (*UpdateDocumentResponse, error) {
+	out := new(UpdateDocumentResponse)
+	err := c.cc.Invoke(ctx, KnowledgeService_UpdateDocument_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *knowledgeServiceClient) RegenerateDocument(ctx context.Context, in *RegenerateDocumentRequest, opts ...grpc.CallOption) (*RegenerateDocumentResponse, error) {
+	out := new(RegenerateDocumentResponse)
+	err := c.cc.Invoke(ctx, KnowledgeService_RegenerateDocument_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *knowledgeServiceClient) ApproveDocument(ctx context.Context, in *ApproveDocumentRequest, opts ...grpc.CallOption) (*ApproveDocumentResponse, error) {
+	out := new(ApproveDocumentResponse)
+	err := c.cc.Invoke(ctx, KnowledgeService_ApproveDocument_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *knowledgeServiceClient) ReviewDocument(ctx context.Context, in *ReviewDocumentRequest, opts ...grpc.CallOption) (*ReviewDocumentResponse, error) {
+	out := new(ReviewDocumentResponse)
+	err := c.cc.Invoke(ctx, KnowledgeService_ReviewDocument_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *knowledgeServiceClient) GetReviewStatus(ctx context.Context, in *GetReviewStatusRequest, opts ...grpc.CallOption) (*GetReviewStatusResponse, error) {
+	out := new(GetReviewStatusResponse)
+	err := c.cc.Invoke(ctx, KnowledgeService_GetReviewStatus_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *knowledgeServiceClient) GenerateUserStories(ctx context.Context, in *GenerateUserStoriesRequest, opts ...grpc.CallOption) (*GenerateUserStoriesResponse, error) {
 	out := new(GenerateUserStoriesResponse)
 	err := c.cc.Invoke(ctx, KnowledgeService_GenerateUserStories_FullMethodName, in, out, opts...)
@@ -61,7 +152,18 @@ func (c *knowledgeServiceClient) GenerateUserStories(ctx context.Context, in *Ge
 // All implementations must embed UnimplementedKnowledgeServiceServer
 // for forward compatibility
 type KnowledgeServiceServer interface {
+	// Document Lifecycle
 	CreatePRD(context.Context, *CreatePRDRequest) (*CreatePRDResponse, error)
+	GenerateDocument(context.Context, *GenerateDocumentRequest) (*GenerateDocumentResponse, error)
+	GetDocument(context.Context, *GetDocumentRequest) (*GetDocumentResponse, error)
+	GetDocumentByContext(context.Context, *GetDocumentByContextRequest) (*GetDocumentResponse, error)
+	UpdateDocument(context.Context, *UpdateDocumentRequest) (*UpdateDocumentResponse, error)
+	RegenerateDocument(context.Context, *RegenerateDocumentRequest) (*RegenerateDocumentResponse, error)
+	// Workflow
+	ApproveDocument(context.Context, *ApproveDocumentRequest) (*ApproveDocumentResponse, error)
+	ReviewDocument(context.Context, *ReviewDocumentRequest) (*ReviewDocumentResponse, error)
+	GetReviewStatus(context.Context, *GetReviewStatusRequest) (*GetReviewStatusResponse, error)
+	// Utilities
 	GenerateUserStories(context.Context, *GenerateUserStoriesRequest) (*GenerateUserStoriesResponse, error)
 	mustEmbedUnimplementedKnowledgeServiceServer()
 }
@@ -72,6 +174,30 @@ type UnimplementedKnowledgeServiceServer struct {
 
 func (UnimplementedKnowledgeServiceServer) CreatePRD(context.Context, *CreatePRDRequest) (*CreatePRDResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePRD not implemented")
+}
+func (UnimplementedKnowledgeServiceServer) GenerateDocument(context.Context, *GenerateDocumentRequest) (*GenerateDocumentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateDocument not implemented")
+}
+func (UnimplementedKnowledgeServiceServer) GetDocument(context.Context, *GetDocumentRequest) (*GetDocumentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDocument not implemented")
+}
+func (UnimplementedKnowledgeServiceServer) GetDocumentByContext(context.Context, *GetDocumentByContextRequest) (*GetDocumentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDocumentByContext not implemented")
+}
+func (UnimplementedKnowledgeServiceServer) UpdateDocument(context.Context, *UpdateDocumentRequest) (*UpdateDocumentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDocument not implemented")
+}
+func (UnimplementedKnowledgeServiceServer) RegenerateDocument(context.Context, *RegenerateDocumentRequest) (*RegenerateDocumentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegenerateDocument not implemented")
+}
+func (UnimplementedKnowledgeServiceServer) ApproveDocument(context.Context, *ApproveDocumentRequest) (*ApproveDocumentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApproveDocument not implemented")
+}
+func (UnimplementedKnowledgeServiceServer) ReviewDocument(context.Context, *ReviewDocumentRequest) (*ReviewDocumentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReviewDocument not implemented")
+}
+func (UnimplementedKnowledgeServiceServer) GetReviewStatus(context.Context, *GetReviewStatusRequest) (*GetReviewStatusResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetReviewStatus not implemented")
 }
 func (UnimplementedKnowledgeServiceServer) GenerateUserStories(context.Context, *GenerateUserStoriesRequest) (*GenerateUserStoriesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateUserStories not implemented")
@@ -107,6 +233,150 @@ func _KnowledgeService_CreatePRD_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _KnowledgeService_GenerateDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GenerateDocumentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KnowledgeServiceServer).GenerateDocument(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: KnowledgeService_GenerateDocument_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KnowledgeServiceServer).GenerateDocument(ctx, req.(*GenerateDocumentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _KnowledgeService_GetDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDocumentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KnowledgeServiceServer).GetDocument(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: KnowledgeService_GetDocument_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KnowledgeServiceServer).GetDocument(ctx, req.(*GetDocumentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _KnowledgeService_GetDocumentByContext_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDocumentByContextRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KnowledgeServiceServer).GetDocumentByContext(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: KnowledgeService_GetDocumentByContext_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KnowledgeServiceServer).GetDocumentByContext(ctx, req.(*GetDocumentByContextRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _KnowledgeService_UpdateDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateDocumentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KnowledgeServiceServer).UpdateDocument(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: KnowledgeService_UpdateDocument_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KnowledgeServiceServer).UpdateDocument(ctx, req.(*UpdateDocumentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _KnowledgeService_RegenerateDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegenerateDocumentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KnowledgeServiceServer).RegenerateDocument(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: KnowledgeService_RegenerateDocument_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KnowledgeServiceServer).RegenerateDocument(ctx, req.(*RegenerateDocumentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _KnowledgeService_ApproveDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApproveDocumentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KnowledgeServiceServer).ApproveDocument(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: KnowledgeService_ApproveDocument_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KnowledgeServiceServer).ApproveDocument(ctx, req.(*ApproveDocumentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _KnowledgeService_ReviewDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReviewDocumentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KnowledgeServiceServer).ReviewDocument(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: KnowledgeService_ReviewDocument_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KnowledgeServiceServer).ReviewDocument(ctx, req.(*ReviewDocumentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _KnowledgeService_GetReviewStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetReviewStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(KnowledgeServiceServer).GetReviewStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: KnowledgeService_GetReviewStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(KnowledgeServiceServer).GetReviewStatus(ctx, req.(*GetReviewStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _KnowledgeService_GenerateUserStories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GenerateUserStoriesRequest)
 	if err := dec(in); err != nil {
@@ -135,6 +405,38 @@ var KnowledgeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreatePRD",
 			Handler:    _KnowledgeService_CreatePRD_Handler,
+		},
+		{
+			MethodName: "GenerateDocument",
+			Handler:    _KnowledgeService_GenerateDocument_Handler,
+		},
+		{
+			MethodName: "GetDocument",
+			Handler:    _KnowledgeService_GetDocument_Handler,
+		},
+		{
+			MethodName: "GetDocumentByContext",
+			Handler:    _KnowledgeService_GetDocumentByContext_Handler,
+		},
+		{
+			MethodName: "UpdateDocument",
+			Handler:    _KnowledgeService_UpdateDocument_Handler,
+		},
+		{
+			MethodName: "RegenerateDocument",
+			Handler:    _KnowledgeService_RegenerateDocument_Handler,
+		},
+		{
+			MethodName: "ApproveDocument",
+			Handler:    _KnowledgeService_ApproveDocument_Handler,
+		},
+		{
+			MethodName: "ReviewDocument",
+			Handler:    _KnowledgeService_ReviewDocument_Handler,
+		},
+		{
+			MethodName: "GetReviewStatus",
+			Handler:    _KnowledgeService_GetReviewStatus_Handler,
 		},
 		{
 			MethodName: "GenerateUserStories",

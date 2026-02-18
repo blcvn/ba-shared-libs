@@ -15,6 +15,8 @@ service PersistenceService {
 
   // Document Operations
   rpc CreateDocument(CreateDocumentRequest) returns (CreateDocumentResponse);
+  rpc ListDocuments(ListDocumentsRequest) returns (ListDocumentsResponse);
+  rpc UpdateDocument(UpdateDocumentRequest) returns (UpdateDocumentResponse);
   rpc GetDocument(GetDocumentRequest) returns (GetDocumentResponse);
 
   // Graph Operations
@@ -25,6 +27,7 @@ service PersistenceService {
 
   // Review Operations
   rpc CreateReview(CreateReviewRequest) returns (CreateReviewResponse);
+  rpc ListReviews(ListReviewsRequest) returns (ListReviewsResponse);
 }
 
 // Document Messages
@@ -47,14 +50,45 @@ message CreateDocumentResponse {
   string error = 2;
 }
 
+message UpdateDocumentRequest {
+  string document_id = 1;
+  string content = 2;
+  string status = 3;
+}
+
+message UpdateDocumentResponse {
+  bool success = 1;
+  string error = 2;
+}
+
 message GetDocumentRequest {
   string id = 1;
+}
+
+message ListDocumentsRequest {
+  string parent_id = 1;
+  string project_id = 2;
+  string tier = 3;
+}
+
+message ListDocumentsResponse {
+  repeated GetDocumentResponse documents = 1;
 }
 
 message GetDocumentResponse {
   string id = 1;
   string title = 2;
   string content = 3;
+  string author = 4;
+  string project_id = 5;
+  string parent_id = 6;
+  string root_id = 7;
+  string module_name = 8;
+  string tier = 9;
+  string status = 10;
+  int32 version = 11;
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
 }
 
 // Graph Messages
@@ -87,6 +121,24 @@ message CreateReviewRequest {
 
 message CreateReviewResponse {
   bool success = 1;
+}
+
+message Review {
+  string id = 1;
+  string document_id = 2;
+  string reviewer = 3;
+  string comments = 4;
+  string status = 5;
+  string action_type = 6;
+  google.protobuf.Timestamp created_at = 7;
+}
+
+message ListReviewsRequest {
+  string document_id = 1;
+}
+
+message ListReviewsResponse {
+  repeated Review reviews = 1;
 }
 
 // Task Messages (Original)

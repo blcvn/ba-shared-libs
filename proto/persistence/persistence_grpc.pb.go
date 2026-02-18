@@ -24,10 +24,13 @@ const (
 	PersistenceService_GetTask_FullMethodName           = "/persistence.PersistenceService/GetTask"
 	PersistenceService_ListTasks_FullMethodName         = "/persistence.PersistenceService/ListTasks"
 	PersistenceService_CreateDocument_FullMethodName    = "/persistence.PersistenceService/CreateDocument"
+	PersistenceService_ListDocuments_FullMethodName     = "/persistence.PersistenceService/ListDocuments"
+	PersistenceService_UpdateDocument_FullMethodName    = "/persistence.PersistenceService/UpdateDocument"
 	PersistenceService_GetDocument_FullMethodName       = "/persistence.PersistenceService/GetDocument"
 	PersistenceService_ExecuteGraphQuery_FullMethodName = "/persistence.PersistenceService/ExecuteGraphQuery"
 	PersistenceService_CreateApproval_FullMethodName    = "/persistence.PersistenceService/CreateApproval"
 	PersistenceService_CreateReview_FullMethodName      = "/persistence.PersistenceService/CreateReview"
+	PersistenceService_ListReviews_FullMethodName       = "/persistence.PersistenceService/ListReviews"
 )
 
 // PersistenceServiceClient is the client API for PersistenceService service.
@@ -41,6 +44,8 @@ type PersistenceServiceClient interface {
 	ListTasks(ctx context.Context, in *ListTasksRequest, opts ...grpc.CallOption) (*ListTasksResponse, error)
 	// Document Operations
 	CreateDocument(ctx context.Context, in *CreateDocumentRequest, opts ...grpc.CallOption) (*CreateDocumentResponse, error)
+	ListDocuments(ctx context.Context, in *ListDocumentsRequest, opts ...grpc.CallOption) (*ListDocumentsResponse, error)
+	UpdateDocument(ctx context.Context, in *UpdateDocumentRequest, opts ...grpc.CallOption) (*UpdateDocumentResponse, error)
 	GetDocument(ctx context.Context, in *GetDocumentRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error)
 	// Graph Operations
 	ExecuteGraphQuery(ctx context.Context, in *GraphQueryRequest, opts ...grpc.CallOption) (*GraphQueryResponse, error)
@@ -48,6 +53,7 @@ type PersistenceServiceClient interface {
 	CreateApproval(ctx context.Context, in *CreateApprovalRequest, opts ...grpc.CallOption) (*CreateApprovalResponse, error)
 	// Review Operations
 	CreateReview(ctx context.Context, in *CreateReviewRequest, opts ...grpc.CallOption) (*CreateReviewResponse, error)
+	ListReviews(ctx context.Context, in *ListReviewsRequest, opts ...grpc.CallOption) (*ListReviewsResponse, error)
 }
 
 type persistenceServiceClient struct {
@@ -103,6 +109,24 @@ func (c *persistenceServiceClient) CreateDocument(ctx context.Context, in *Creat
 	return out, nil
 }
 
+func (c *persistenceServiceClient) ListDocuments(ctx context.Context, in *ListDocumentsRequest, opts ...grpc.CallOption) (*ListDocumentsResponse, error) {
+	out := new(ListDocumentsResponse)
+	err := c.cc.Invoke(ctx, PersistenceService_ListDocuments_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *persistenceServiceClient) UpdateDocument(ctx context.Context, in *UpdateDocumentRequest, opts ...grpc.CallOption) (*UpdateDocumentResponse, error) {
+	out := new(UpdateDocumentResponse)
+	err := c.cc.Invoke(ctx, PersistenceService_UpdateDocument_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *persistenceServiceClient) GetDocument(ctx context.Context, in *GetDocumentRequest, opts ...grpc.CallOption) (*GetDocumentResponse, error) {
 	out := new(GetDocumentResponse)
 	err := c.cc.Invoke(ctx, PersistenceService_GetDocument_FullMethodName, in, out, opts...)
@@ -139,6 +163,15 @@ func (c *persistenceServiceClient) CreateReview(ctx context.Context, in *CreateR
 	return out, nil
 }
 
+func (c *persistenceServiceClient) ListReviews(ctx context.Context, in *ListReviewsRequest, opts ...grpc.CallOption) (*ListReviewsResponse, error) {
+	out := new(ListReviewsResponse)
+	err := c.cc.Invoke(ctx, PersistenceService_ListReviews_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PersistenceServiceServer is the server API for PersistenceService service.
 // All implementations must embed UnimplementedPersistenceServiceServer
 // for forward compatibility
@@ -150,6 +183,8 @@ type PersistenceServiceServer interface {
 	ListTasks(context.Context, *ListTasksRequest) (*ListTasksResponse, error)
 	// Document Operations
 	CreateDocument(context.Context, *CreateDocumentRequest) (*CreateDocumentResponse, error)
+	ListDocuments(context.Context, *ListDocumentsRequest) (*ListDocumentsResponse, error)
+	UpdateDocument(context.Context, *UpdateDocumentRequest) (*UpdateDocumentResponse, error)
 	GetDocument(context.Context, *GetDocumentRequest) (*GetDocumentResponse, error)
 	// Graph Operations
 	ExecuteGraphQuery(context.Context, *GraphQueryRequest) (*GraphQueryResponse, error)
@@ -157,6 +192,7 @@ type PersistenceServiceServer interface {
 	CreateApproval(context.Context, *CreateApprovalRequest) (*CreateApprovalResponse, error)
 	// Review Operations
 	CreateReview(context.Context, *CreateReviewRequest) (*CreateReviewResponse, error)
+	ListReviews(context.Context, *ListReviewsRequest) (*ListReviewsResponse, error)
 	mustEmbedUnimplementedPersistenceServiceServer()
 }
 
@@ -179,6 +215,12 @@ func (UnimplementedPersistenceServiceServer) ListTasks(context.Context, *ListTas
 func (UnimplementedPersistenceServiceServer) CreateDocument(context.Context, *CreateDocumentRequest) (*CreateDocumentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateDocument not implemented")
 }
+func (UnimplementedPersistenceServiceServer) ListDocuments(context.Context, *ListDocumentsRequest) (*ListDocumentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListDocuments not implemented")
+}
+func (UnimplementedPersistenceServiceServer) UpdateDocument(context.Context, *UpdateDocumentRequest) (*UpdateDocumentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateDocument not implemented")
+}
 func (UnimplementedPersistenceServiceServer) GetDocument(context.Context, *GetDocumentRequest) (*GetDocumentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDocument not implemented")
 }
@@ -190,6 +232,9 @@ func (UnimplementedPersistenceServiceServer) CreateApproval(context.Context, *Cr
 }
 func (UnimplementedPersistenceServiceServer) CreateReview(context.Context, *CreateReviewRequest) (*CreateReviewResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateReview not implemented")
+}
+func (UnimplementedPersistenceServiceServer) ListReviews(context.Context, *ListReviewsRequest) (*ListReviewsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListReviews not implemented")
 }
 func (UnimplementedPersistenceServiceServer) mustEmbedUnimplementedPersistenceServiceServer() {}
 
@@ -294,6 +339,42 @@ func _PersistenceService_CreateDocument_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PersistenceService_ListDocuments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListDocumentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PersistenceServiceServer).ListDocuments(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PersistenceService_ListDocuments_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PersistenceServiceServer).ListDocuments(ctx, req.(*ListDocumentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PersistenceService_UpdateDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateDocumentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PersistenceServiceServer).UpdateDocument(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PersistenceService_UpdateDocument_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PersistenceServiceServer).UpdateDocument(ctx, req.(*UpdateDocumentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PersistenceService_GetDocument_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetDocumentRequest)
 	if err := dec(in); err != nil {
@@ -366,6 +447,24 @@ func _PersistenceService_CreateReview_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PersistenceService_ListReviews_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListReviewsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PersistenceServiceServer).ListReviews(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PersistenceService_ListReviews_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PersistenceServiceServer).ListReviews(ctx, req.(*ListReviewsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PersistenceService_ServiceDesc is the grpc.ServiceDesc for PersistenceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -394,6 +493,14 @@ var PersistenceService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PersistenceService_CreateDocument_Handler,
 		},
 		{
+			MethodName: "ListDocuments",
+			Handler:    _PersistenceService_ListDocuments_Handler,
+		},
+		{
+			MethodName: "UpdateDocument",
+			Handler:    _PersistenceService_UpdateDocument_Handler,
+		},
+		{
 			MethodName: "GetDocument",
 			Handler:    _PersistenceService_GetDocument_Handler,
 		},
@@ -408,6 +515,10 @@ var PersistenceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateReview",
 			Handler:    _PersistenceService_CreateReview_Handler,
+		},
+		{
+			MethodName: "ListReviews",
+			Handler:    _PersistenceService_ListReviews_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
