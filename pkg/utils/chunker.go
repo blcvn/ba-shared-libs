@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/blcvn/backend/services/pkg/domain"
+	"github.com/blcvn/ba-shared-libs/pkg/domain"
 )
 
 // DocChunker handles splitting ingestion blocks into smaller chunks for LLM processing.

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/blcvn/backend/services/pkg/entities"
+	"github.com/blcvn/ba-shared-libs/pkg/entities"
 	"github.com/redis/go-redis/v9"
 )
 

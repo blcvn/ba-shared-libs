@@ -1,4 +1,4 @@
-module github.com/blcvn/backend/services/pkg
+module github.com/blcvn/ba-shared-libs/pkg
 
 go 1.24.0
 
